@@ -2,7 +2,7 @@ describe("Coin", function() {
   var coin;
 
   beforeEach(function() {
-    nickel = new Coin({name: "nickel"})
+    nickel = new Coin({name: "nickel"});
   });
 
   describe("name", function() {
@@ -19,7 +19,7 @@ describe("Coin", function() {
 
   describe("weight", function() {
     it("has a weight", function() {
-      expect(nickel.weight).toEqual(630)
+      expect(nickel.weight).toEqual(630);
     });
   });
 });

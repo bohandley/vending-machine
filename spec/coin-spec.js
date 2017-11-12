@@ -12,8 +12,14 @@ describe("Coin", function() {
   });
 
   describe("size", function () {
-    it("has a size", function () {
+    it("has a size", function() {
       expect(nickel.size).toEqual(6);
+    });
+  });
+
+  describe("weight", function() {
+    it("has a weight", function() {
+      expect(nickel.weight).toEqual(630)
     });
   });
 });

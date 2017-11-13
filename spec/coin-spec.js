@@ -27,6 +27,6 @@ describe("Coin", function() {
 
   describe("a penny's weight", function(){});
   it("describes a penny's weight", function(){
-    expect(penny.weight)toEqual(554);
+    expect(penny.weight).toEqual(554);
   });
 });

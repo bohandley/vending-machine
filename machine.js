@@ -7,6 +7,7 @@ var Machine = function(args) {
 	this.inventory = args.inventory;
 	this.display = 'INSERT COIN';
 };
+
 var weights = { 
 	630: 0.05,
 	415: 0.10,

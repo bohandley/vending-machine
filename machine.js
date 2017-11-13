@@ -8,3 +8,12 @@ var Machine = function(args) {
                   "THANK YOU", 
                   "EXACT CHANGE"];
 }
+
+Machine.prototype.insertCoins = function(coin) {
+  if (coin.weight === 554) {
+    this.coinReturn.push(coin);
+  } else {
+    this.currentAmount.push(coin);
+  }
+}
+

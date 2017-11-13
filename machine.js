@@ -36,43 +36,32 @@ Machine.prototype.loadCoins = function(args) {
 };
 
 Machine.prototype.sumInsertedCoins = function() {
-
-
 	var total = this.insertedCoins.map(function(x){
 		// Assign a value to a coin 
 		x.value = weights[x.weight];
 		return weights[x.weight];
 	});
-
 	var sum = total.reduce(function(a,b) {
 		return a + b;
 	});
-
 	this.currentAmount = sum;
 	return sum;
 };
 
 Machine.prototype.selectProduct = function(product) { 
-	
-
 	this.sumInsertedCoins();
-
 	if (this.currentAmount >= product.price) {
 		// Display with HTML in future
 		this.display = displays[2];
-    
 		// Identify which product to remove from inventory
 		var i = this.inventory.findIndex(function(element){
 			return element.name === product.name;
 		});
-
 		// Remove the product from the inventory
 		var selectedProduct = this.inventory.splice(i, 1);
-
 		// Add the coins to the totalCoins
 		this.totalCoins = this.totalCoins.concat(this.insertedCoins);
 		this.insertedCoins = [];
-
 		var machine = this;
 		this.makeChange(product, machine);
 		// Reset the currentAmount display to 0.00
@@ -87,7 +76,6 @@ Machine.prototype.selectProduct = function(product) {
 
 Machine.prototype.removeProduct = function() {
 	this.display = displays[0];
-
 	return this.productReturn.unshift();
 };
 
@@ -96,6 +84,7 @@ Machine.prototype.pressCoinReturn = function() {
 	this.insertedCoins = [];
 };
 
+// Refactor this beast
 Machine.prototype.makeChange = function(product, machine) {
 	var valueReturned = this.currentAmount - product.price;
 	valueReturned = valueReturned.toFixed(2);

@@ -11,13 +11,15 @@ var Machine = function(args) {
 var weights = { 
 	630: 0.05,
 	415: 0.10,
-	772: 0.25};
+	772: 0.25
+};
 
 var displays = [
 	'INSERT COIN', 
 	'PRICE: ', 
 	'THANK YOU', 
-	'EXACT CHANGE'];
+	'EXACT CHANGE'
+];
 
 // Refactor to add value and change currentAmount when coins are inserted
 Machine.prototype.insertCoins = function(coin) {
@@ -40,13 +42,18 @@ Machine.prototype.sumInsertedCoins = function() {
 	var total = this.insertedCoins.map(function(x){
 		// Assign a value to a coin 
 		x.value = weights[x.weight];
+
+
 		return weights[x.weight];
 	});
+
+
 	var sum = total.reduce(function(a,b) {
 		return a + b;
 	});
+
+	sum = sum.toFixed(2);
 	this.currentAmount = sum;
-	return sum;
 };
 
 Machine.prototype.selectProduct = function(product) { 
@@ -60,15 +67,21 @@ Machine.prototype.selectProduct = function(product) {
 		});
 		// Remove the product from the inventory
 		var selectedProduct = this.inventory.splice(i, 1);
-		// Add the coins to the totalCoins
-		this.totalCoins = this.totalCoins.concat(this.insertedCoins);
-		this.insertedCoins = [];
-		var machine = this;
-		this.makeChange(product, machine);
-		// Reset the currentAmount display to 0.00
-		this.currentAmount = 0.00;
+		
 		// Drop the product into the product 
 		this.productReturn.push(selectedProduct[0]);
+
+		// Add the coins to the totalCoins
+		this.totalCoins = this.totalCoins.concat(this.insertedCoins);
+		
+		// Empty the inserted coin holder
+		this.insertedCoins = [];
+		
+		// Return change if too much has been inserted
+		this.makeChange(product);
+
+		// Reset the currentAmount display to 0.00
+		this.currentAmount = 0.00;
 	} else {
 		// Display with HTML in future
 		this.display = displays[1] + product.price;
@@ -86,43 +99,43 @@ Machine.prototype.pressCoinReturn = function() {
 };
 
 // Refactor this beast
-Machine.prototype.makeChange = function(product, machine) {
+Machine.prototype.makeChange = function(product) {
 	var valueReturned = this.currentAmount - product.price;
 	valueReturned = valueReturned.toFixed(2);
-	if ( valueReturned == 0.05 ) {
+	if ( valueReturned === '0.05' ) {
 		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.05;
+			return element.value == 0.05;
 		});
 		var nickel = this.totalCoins.splice(i, 1)[0];
 		this.coinReturn.push(nickel);
-	} else if ( valueReturned === 0.10 ) {
-		var i = machine.totalCoins.findIndex(function(element){
+	} else if ( valueReturned === '0.10' ) {
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.10;
 		});
 		var dime = this.totalCoins.splice(i, 1)[0];
 		this.coinReturn.push(dime);
-	} else if ( valueReturned === 0.15 ) {
-		var i = machine.totalCoins.findIndex(function(element){
+	} else if ( valueReturned === '0.15' ) {
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.05;
 		});
-		machine.coinReturn.push(machine.totalCoins.splice(i, 1));
-		var i = machine.totalCoins.findIndex(function(element){
+		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.10;
 		});
-		machine.coinReturn.push(machine.totalCoins.splice(i, 1));
-	} else if ( valueReturned === 0.20 ) {
-		var i = machine.totalCoins.findIndex(function(element){
+		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
+	} else if ( valueReturned === '0.20' ) {
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.10;
 		});
-		machine.coinReturn.push(machine.totalCoins.splice(i, 1));
-		var i = machine.totalCoins.findIndex(function(element){
+		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.10;
 		});
-		machine.coinReturn.push(machine.totalCoins.splice(i, 1));
-	} else if ( valueReturned === 0.25 ) {
-		var i = machine.totalCoins.findIndex(function(element){
+		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
+	} else if ( valueReturned === '0.25' ) {
+		var i = this.totalCoins.findIndex(function(element){
 			return element.value === 0.25;
 		});
-		machine.coinReturn.push(machine.totalCoins.splice(i, 1));
+		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
 	}
 };

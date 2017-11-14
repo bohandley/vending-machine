@@ -94,20 +94,25 @@ describe('Machine', function() {
 	describe('identifies how much money has been inserted', function(){
 		it('identifies a quarter is worth 25 cents', function(){
 			machine.insertCoins(quarter);
-			expect(machine.sumInsertedCoins()).toEqual(0.25);
+			machine.sumInsertedCoins();
+			var amount = machine.currentAmount;
+			console.log(amount);
+			expect(amount).toBeCloseTo(0.25);
 		});
 
 		it('sums the values of a nickel, dime and quarter', function(){
 			machine.insertCoins(nickel);
 			machine.insertCoins(dime);
 			machine.insertCoins(quarter);
-			expect(machine.sumInsertedCoins()).toEqual(0.40);
+			machine.sumInsertedCoins();
+			expect(machine.currentAmount).toBeCloseTo(0.40);
 		});
 
 		it('displays the inserted amount', function(){
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
-			expect(machine.currentAmount).toEqual(0.25);
+			console.log(machine.currentAmount);
+			expect(machine.currentAmount).toBeCloseTo(0.25);
 		});
 	});
 
@@ -164,6 +169,29 @@ describe('Machine', function() {
 			machine.insertCoins(dime);
 			machine.selectProduct(cola);
 			expect(machine.coinReturn).toEqual([dime]);
+		});
+
+		it('returns a nickel and a dime when the currentAmount is +0.15', function(){
+			insertQuarters();
+			machine.insertCoins(dime);
+			machine.insertCoins(nickel);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([nickel, dime]);
+		});
+
+		it('returns two dimes when the currentAmount is +0.20', function(){
+			insertQuarters();
+			machine.insertCoins(dime);
+			machine.insertCoins(dime);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([dime, dime]);
+		});
+
+		it('returns a dime when the currentAmount is +0.25', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter]);
 		});
 	});
 

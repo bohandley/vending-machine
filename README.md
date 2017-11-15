@@ -9,5 +9,8 @@ To run the tests, navigate to the `vending-machine` directory.
 
 Type `open SpecRunner.html` in the terminal.
 
-Future versions of vending-machine will use HTML5 as a user inteface with DOM manipulation 
-and event handling to insert coins and purchase products. 
+To interact with the program, navigate to the `vending-machine` directory. 
+
+Type `open index.html` in the terminal.
+
+Insert coins, choose products, receive change. Be careful, products sell out quickly!

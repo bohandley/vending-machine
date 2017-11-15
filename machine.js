@@ -1,10 +1,10 @@
 var Machine = function(args) {
-	this.totalCoins = args.totalCoins;
+	this.totalCoins = args.totalCoins || [];
 	this.insertedCoins = [];
 	this.currentAmount = 0.00;
 	this.coinReturn = [];
 	this.productReturn = [];
-	this.inventory = args.inventory;
+	this.inventory = args.inventory || [];
 	this.display = 'INSERT COIN';
 };
 
@@ -18,7 +18,8 @@ var displays = [
 	'INSERT COIN', 
 	'PRICE: ', 
 	'THANK YOU', 
-	'EXACT CHANGE'
+	'EXACT CHANGE',
+	'SOLD OUT'
 ];
 
 var monies = [
@@ -27,7 +28,7 @@ var monies = [
 	0.05
 ];
 
-// Refactor to add value and change currentAmount when coins are inserted
+// Machine rejects pennies but accepts nickels, dimes and quarters
 Machine.prototype.insertCoins = function(coin) {
 	if (coin.weight === 554) {
 		this.coinReturn.push(coin);
@@ -48,29 +49,41 @@ Machine.prototype.loadCoins = function(args) {
 Machine.prototype.selectProduct = function(product) { 
 	this.sumInsertedCoins();
 	if (this.currentAmount >= product.price) {
-		// Display with HTML in future
-		this.display = displays[2];
-		// Identify which product to remove from inventory
-		var i = this.inventory.findIndex(function(element){
-			return element.name === product.name;
-		});
-		// Remove the product from the inventory
-		var selectedProduct = this.inventory.splice(i, 1);
+		var found = false;
 		
-		// Drop the product into the product 
-		this.productReturn.push(selectedProduct[0]);
-
-		// Add the coins to the totalCoins
-		this.totalCoins = this.totalCoins.concat(this.insertedCoins);
+		for(var i = 0; i < this.inventory.length; i++) {
+			if ( this.inventory[i].name === product.name ) {
+				found = true;   
+			}
+		}
 		
-		// Empty the inserted coin holder
-		this.insertedCoins = [];
-		
-		// Return change if too much has been inserted
-		this.makeChange(product);
-
-		// Reset the currentAmount display to 0.00
-		this.currentAmount = 0.00;
+		if ( found == false) {
+			return this.display = displays[4];
+		} else {
+			// Display with HTML in future
+			this.display = displays[2];
+			// Identify which product to remove from inventory
+			var index = this.inventory.findIndex(function(element){
+				return element.name === product.name;
+			});
+			// Remove the product from the inventory
+			var selectedProduct = this.inventory.splice(index, 1);
+			
+			// Drop the product into the product 
+			this.productReturn.push(selectedProduct[0]);
+	
+			// Add the coins to the totalCoins
+			this.totalCoins = this.totalCoins.concat(this.insertedCoins);
+			
+			// Empty the inserted coin holder
+			this.insertedCoins = [];
+			
+			// Return change if too much has been inserted
+			this.makeChange(product);
+	
+			// Reset the currentAmount display to 0.00
+			this.currentAmount = 0.00;
+		}
 	} else {
 		// Display with HTML in future
 		this.display = displays[1] + product.price;

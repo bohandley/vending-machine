@@ -129,7 +129,7 @@ describe('Machine', function() {
 		it('displays the cost of the product if not enough money has been inserted', function(){
 			machine.insertCoins(quarter);
 			machine.selectProduct(cola);
-			expect(machine.display).toEqual('PRICE: 1');
+			expect(machine.display).toEqual('PRICE: 1.00');
 		});
 
 		it('displays \'THANK YOU\' if enough money has been inserted', function(){
@@ -147,7 +147,7 @@ describe('Machine', function() {
 		it('resets the currentAmount to 0.00 when enough money is inserted and a product is selected', function(){
 			insertQuarters();
 			machine.selectProduct(cola);
-			expect(machine.currentAmount).toEqual(0.00);
+			expect(machine.currentAmount).toEqual('0.00');
 		});
 
 		it('resets the display to \'INSERT COIN\' when the product is removed', function(){

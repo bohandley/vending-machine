@@ -27,7 +27,17 @@ describe('Machine', function() {
 		penny   = new Coin({name: 'penny'});
 
 		// Assign coins
-		coins = [nickel, dime, quarter, nickel, dime, quarter];
+		coins = [
+			nickel, 	
+			nickel, 
+			nickel, 
+			dime, 		
+			dime, 	
+			dime,
+			quarter, 	
+			quarter, 
+			quarter
+		];
 
 		machine = new Machine({ inventory : inventory });  
 		machine.loadCoins(coins);
@@ -280,6 +290,42 @@ describe('Machine', function() {
 			machine.selectProduct(cola);
 			machine.pressCoinReturn();
 			expect(machine.coinReturn).toEqual([quarter, quarter, quarter, quarter]);
+		});
+	});
+
+	describe('sum totalCoins', function(){
+		it('sums the coins in the totalCoins collection', function(){
+			expect(machine.sumTotalCoins()).toEqual(1.20)
+		});
+	});
+
+	describe('exact change', function(){
+		it('displays EXACT CHANGE if there is less than 1.00 in coins in the totalCoins collection', function(){
+			machineWithoutMoney = new Machine({inventory: inventory})
+			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE')
+		});
+
+		it('displays EXACT CHANGE if there is less than 1.00 in coins in the totalCoins collection after loading coins', function(){
+			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney.loadCoins([quarter]);
+			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE')
+		});
+
+		it('displays INSERT COIN if there is more than 1.00 in coins in the totalCoins collection after loading coins', function(){
+			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney.loadCoins(coins);
+			expect(machineWithoutMoney.display).toEqual('INSERT COIN')
+		});
+
+		it('displays INSERT COIN if no money was loaded, but a product was purchased resulting in totalCoins value > 1.00', function(){
+			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney.insertCoins(quarter);
+			machineWithoutMoney.insertCoins(quarter);
+			machineWithoutMoney.insertCoins(quarter);
+			machineWithoutMoney.insertCoins(quarter);
+			machineWithoutMoney.selectProduct(cola);
+			machineWithoutMoney.removeProduct();
+			expect(machineWithoutMoney.display).toEqual('INSERT COIN')
 		});
 	});
 });

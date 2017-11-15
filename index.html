@@ -7,52 +7,60 @@
   <script src="product.js"></script>
   <script src="coin.js"></script>
   <script src="controller.js"></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
 
 </head>
-<body>
-  <div class="container">
-    <div class="machine">
-      <div class="display-window">
+  <body>
+    <div class="container">
+      <div class="machine">
         
-      </div>
-      <div id="display">
+        <p>Administrative Functions:</p>
+        <div class="administrative-duties"> 
+          <button id="empty-all-coins">Empty All Coins</  button>
+          <button id="restock-coins">Restock Coins</button>
+          <button id="remove-all-products-from-inventory">  Remove All Products</button>
+          <button id="restock-inventory">Restock Inventory</  button>
+        </div>  
         
-      </div>
-      <div class="insert-coins">
-        <button type="button" id="nickel">Insert nickel</button>
-        <button type="button" id="dime">Insert dime</button>
-        <button type="button" id="quarter">Insert quarter</button>
-        <button type="button" id="penny">Insert penny</button>
-      </div>
-      <p>Amount Inserted</p>
-      <div id="current-amount">
-        <p>Amount inserted</p>
-      </div>
-      <p>Choose a Product</p>
-      <div class="product-buttons">
-        <button type="button" id="cola">Cola!</button>
-        <button type="button" id="chips">Chips!</button>
-        <button type="button" id="candy">Candy!</button>
-      </div>
-      <p>Did you change your mind?</p>
-      <div id="coin-return">
-        <button type="button" id="coin-return-button" >Coin Return</button>
-      </div>
-      <p>Collect Product</p>
-      <div class="product-return">
-        <button id="take-product">Take Product</button>
-        [<a id="product-return"></a>]
-      </div>
-      <p>Collect Coins</p>
-      <div class="coin-return">
-        <button id="take-coins">Take Coins</button>
-        [<a id="coins"></a>]
-      </div>
-      <div class="key-access">
+        <p>Display:</p>
+        <div id="display"></div>
+        
+        <p>Choose a Coin:</p>
+        <div class="insert-coins">
+          <button type="button" id="nickel">Insert nickel</ button>
+          <button type="button" id="dime">Insert dime</ button>
+          <button type="button" id="quarter">Insert quarter </button>
+          <button type="button" id="penny">Insert penny</ button>
+        </div>
+        
+        <p>Amount Inserted:</p>
+        <div id="current-amount"></div>
+        
+        <p>Choose a Product:</p>
+        <div class="product-buttons">
+          <button type="button" id="cola">Cola!</button>
+          <button type="button" id="chips">Chips!</button>
+          <button type="button" id="candy">Candy!</button>
+        </div>
+        
+        <p>Did you change your mind?</p>
+        <div id="coin-return">
+          <button type="button" id="coin-return-button" > Coin Return</button>
+        </div>
+        
+        <p>Collect Product:</p>
+        <div class="product-return">
+          <button id="take-product">Take Product</button>
+          [<a id="product-return"></a>]
+        </div>
+        
+        <p>Collect Coins:</p>
+        <div class="coin-return">
+          <button id="take-coins">Take Coins</button>
+          [<a id="coins"></a>]
+        </div>  
         
       </div>
     </div>
-  </div>
-
-</body>
+  </body>
 </html>

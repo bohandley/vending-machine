@@ -27,7 +27,7 @@ describe('Machine', function() {
 		penny   = new Coin({name: 'penny'});
 
 		// Assign coins
-		coins = [nickel, dime, quarter];
+		coins = [nickel, dime, quarter, nickel, dime, quarter];
 
 		machine = new Machine({ inventory : inventory });  
 		machine.loadCoins(coins);
@@ -176,7 +176,7 @@ describe('Machine', function() {
 			machine.insertCoins(dime);
 			machine.insertCoins(nickel);
 			machine.selectProduct(cola);
-			expect(machine.coinReturn).toEqual([nickel, dime]);
+			expect(machine.coinReturn).toEqual([dime, nickel]);
 		});
 
 		it('returns two dimes when the currentAmount is +0.20', function(){
@@ -187,15 +187,69 @@ describe('Machine', function() {
 			expect(machine.coinReturn).toEqual([dime, dime]);
 		});
 
-		it('returns a dime when the currentAmount is +0.25', function(){
+		it('returns a quarter when the currentAmount is +0.25', function(){
 			insertQuarters();
 			machine.insertCoins(quarter);
 			machine.selectProduct(cola);
 			expect(machine.coinReturn).toEqual([quarter]);
 		});
+
+		it('returns a quarter and a nickel when the currentAmount is +0.30', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(nickel);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, nickel]);
+		});
+
+		it('returns a quarter when the currentAmount is +0.35', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(dime);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, dime]);
+		});
+
+		it('returns a quarter when the currentAmount is +0.40', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(dime);
+			machine.insertCoins(nickel);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, dime, nickel]);
+		});
+
+		it('returns two quarters when the currentAmount is +0.50', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(quarter);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, quarter]);
+		});
+
+		it('returns two quarters and a dime and a nickel when the currentAmount is +0.65', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(quarter);
+			machine.insertCoins(dime);
+			machine.insertCoins(nickel);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, quarter, dime, nickel]);
+		});
+
+		it('returns two quarters and two dimes when the currentAmount is +0.70', function(){
+			insertQuarters();
+			machine.insertCoins(quarter);
+			machine.insertCoins(quarter);
+			machine.insertCoins(dime);
+			machine.insertCoins(dime);
+			machine.selectProduct(cola);
+			expect(machine.coinReturn).toEqual([quarter, quarter, dime, nickel]);
+		});
+
 	});
 
-	describe('it returns coins when the coin return button is pressed', function(){
+	describe('it returns all inserted coins when the coin return button is pressed', function(){
 		it('returns all the inserted coinscoins', function(){
 			machine.insertCoins(quarter);
 			var coins = machine.insertedCoins;
@@ -203,4 +257,5 @@ describe('Machine', function() {
 			expect(machine.coinReturn).toEqual(coins);
 		});
 	});
+
 });

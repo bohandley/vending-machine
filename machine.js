@@ -21,6 +21,12 @@ var displays = [
 	'EXACT CHANGE'
 ];
 
+var monies = [
+	0.25,
+	0.10,
+	0.05
+];
+
 // Refactor to add value and change currentAmount when coins are inserted
 Machine.prototype.insertCoins = function(coin) {
 	if (coin.weight === 554) {
@@ -30,30 +36,13 @@ Machine.prototype.insertCoins = function(coin) {
 	}
 };
 
+// Add value to each coin in a coin collection when loaded into the machine
 Machine.prototype.loadCoins = function(args) {
 	this.totalCoins = args.map(function(coin){
 		coin.value = weights[coin.weight];
 		coin.value.toFixed(2);
 		return coin;
 	});
-};
-
-Machine.prototype.sumInsertedCoins = function() {
-	var total = this.insertedCoins.map(function(x){
-		// Assign a value to a coin 
-		x.value = weights[x.weight];
-
-
-		return weights[x.weight];
-	});
-
-
-	var sum = total.reduce(function(a,b) {
-		return a + b;
-	});
-
-	sum = sum.toFixed(2);
-	this.currentAmount = sum;
 };
 
 Machine.prototype.selectProduct = function(product) { 
@@ -88,54 +77,54 @@ Machine.prototype.selectProduct = function(product) {
 	} 
 };
 
-Machine.prototype.removeProduct = function() {
-	this.display = displays[0];
-	return this.productReturn.unshift();
+// This function is execeted when a product is selected
+Machine.prototype.sumInsertedCoins = function() {
+	var total = this.insertedCoins.map(function(x){
+		// Assign a value to a coin when it is inserted
+		x.value = weights[x.weight];
+		return weights[x.weight];
+	});
+	var sum = total.reduce(function(a,b) {
+		return a + b;
+	});
+	sum = sum.toFixed(2);
+	this.currentAmount = sum;
 };
 
+// When a product is purchased that costs less than the amount inserted the machine makes change
+Machine.prototype.makeChange = function(product) {
+	var valueReturned = this.currentAmount - product.price;
+	valueReturned = valueReturned.toFixed(2);
+	var machine = this;
+	
+	monies.forEach(function(coin){
+		var times =  valueReturned / coin;
+		if ( times > 0.99 && times < 1 ) {
+			times = 1;
+		}
+		times = Math.floor(times);
+		var i=0;
+		for (i; i < times; i++) {
+			var index = this.totalCoins.findIndex(function(element){
+				return element.value == coin;
+			});
+			this.coinReturn.push(this.totalCoins.splice(index, 1)[0]);
+		}
+		valueReturned = valueReturned - (times * coin);
+	},machine);
+};
+
+// When a customer changes their mind before choosing a product, they can have their money returned
 Machine.prototype.pressCoinReturn = function() {
 	this.coinReturn = this.coinReturn.concat(this.insertedCoins);
 	this.insertedCoins = [];
 };
 
-// Refactor this beast
-Machine.prototype.makeChange = function(product) {
-	var valueReturned = this.currentAmount - product.price;
-	valueReturned = valueReturned.toFixed(2);
-	if ( valueReturned === '0.05' ) {
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value == 0.05;
-		});
-		var nickel = this.totalCoins.splice(i, 1)[0];
-		this.coinReturn.push(nickel);
-	} else if ( valueReturned === '0.10' ) {
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.10;
-		});
-		var dime = this.totalCoins.splice(i, 1)[0];
-		this.coinReturn.push(dime);
-	} else if ( valueReturned === '0.15' ) {
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.05;
-		});
-		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.10;
-		});
-		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
-	} else if ( valueReturned === '0.20' ) {
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.10;
-		});
-		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.10;
-		});
-		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
-	} else if ( valueReturned === '0.25' ) {
-		var i = this.totalCoins.findIndex(function(element){
-			return element.value === 0.25;
-		});
-		this.coinReturn.push(this.totalCoins.splice(i, 1)[0]);
-	}
+// Take a product that has been paid for
+Machine.prototype.removeProduct = function() {
+	this.display = displays[0];
+	return this.productReturn.unshift();
 };
+
+
+

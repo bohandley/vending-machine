@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vending Machine</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="machine.js"></script>
+  <script src="product.js"></script>
+  <script src="coin.js"></script>
+  <script src="controller.js"></script>
+
+</head>
+<body>
+  <div class="container">
+    <div class="machine">
+      <div class="display-window">
+        
+      </div>
+      <div id="display">
+        
+      </div>
+      <div class="insert-coins">
+        <button type="button" id="nickel">Insert nickel</button>
+        <button type="button" id="dime">Insert dime</button>
+        <button type="button" id="quarter">Insert quarter</button>
+        <button type="button" id="penny">Insert penny</button>
+      </div>
+      <p>Amount Inserted</p>
+      <div id="current-amount">
+        <p>Amount inserted</p>
+      </div>
+      <p>Choose a Product</p>
+      <div class="product-buttons">
+        <button type="button" id="cola">Cola!</button>
+        <button type="button" id="chips">Chips!</button>
+        <button type="button" id="candy">Candy!</button>
+      </div>
+      <p>Did you change your mind?</p>
+      <div id="coin-return">
+        <button type="button" id="coin-return-button" >Coin Return</button>
+      </div>
+      <p>Collect Product</p>
+      <div class="product-return">
+        <button id="take-product">Take Product</button>
+        [<a id="product-return"></a>]
+      </div>
+      <p>Collect Coins</p>
+      <div class="coin-return">
+        <button id="take-coins">Take Coins</button>
+        [<a id="coins"></a>]
+      </div>
+      <div class="key-access">
+        
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

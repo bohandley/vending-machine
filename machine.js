@@ -1,7 +1,8 @@
+
 var Machine = function(args) {
 	this.totalCoins = args.totalCoins || [];
 	this.insertedCoins = [];
-	this.currentAmount = 0.00;
+	this.currentAmount = 0.00.toFixed(2);
 	this.coinReturn = [];
 	this.productReturn = [];
 	this.inventory = args.inventory || [];
@@ -83,11 +84,12 @@ Machine.prototype.selectProduct = function(product) {
 			this.makeChange(product);
 	
 			// Reset the currentAmount display to 0.00
-			this.currentAmount = 0.00;
+			this.currentAmount = 0.00.toFixed(2);
 		}
 	} else {
 		// Display with HTML in future
-		this.display = displays[1] + product.price;
+		this.display = displays[1] + product.price.toFixed(2);
+		this.sumInsertedCoins();
 	} 
 };
 
@@ -131,13 +133,20 @@ Machine.prototype.makeChange = function(product) {
 // When a customer changes their mind before choosing a product, they can have their money returned
 Machine.prototype.pressCoinReturn = function() {
 	this.coinReturn = this.coinReturn.concat(this.insertedCoins);
-	this.insertedCoins = [];
+	this.insertedCoins = new Array;
+	this.currentAmount = 0.00.toFixed(2);
 };
 
 // Take a product that has been paid for
 Machine.prototype.removeProduct = function() {
 	this.display = this.initialDisplay();
-	return this.productReturn.unshift();
+	this.productReturn = new Array;
+	this.currentAmount = 0.00.toFixed(2);
+};
+
+Machine.prototype.takeCoins = function(){
+	this.coinReturn = new Array;
+	this.currentAmount = 0.00.toFixed(2);
 };
 
 Machine.prototype.sumTotalCoins = function() {
@@ -157,6 +166,8 @@ Machine.prototype.initialDisplay = function() {
 		return displays[3];
 	}
 };
+
+
 
 
 

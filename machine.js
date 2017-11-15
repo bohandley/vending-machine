@@ -5,7 +5,7 @@ var Machine = function(args) {
 	this.coinReturn = [];
 	this.productReturn = [];
 	this.inventory = args.inventory || [];
-	this.display = 'INSERT COIN';
+	this.display = this.initialDisplay();
 };
 
 var weights = { 
@@ -44,6 +44,7 @@ Machine.prototype.loadCoins = function(args) {
 		coin.value.toFixed(2);
 		return coin;
 	});
+	this.display = this.initialDisplay();
 };
 
 Machine.prototype.selectProduct = function(product) { 
@@ -135,8 +136,26 @@ Machine.prototype.pressCoinReturn = function() {
 
 // Take a product that has been paid for
 Machine.prototype.removeProduct = function() {
-	this.display = displays[0];
+	this.display = this.initialDisplay();
 	return this.productReturn.unshift();
+};
+
+Machine.prototype.sumTotalCoins = function() {
+	var valueAmount = this.totalCoins.map(function(element){
+		return element.value;
+	});
+	var total = valueAmount.reduce(function(a,b){
+		return a + b;
+	},0);
+	return total;
+};
+
+Machine.prototype.initialDisplay = function() {
+	if ( this.sumTotalCoins() >= 1 ) {
+		return displays[0];
+	} else {
+		return displays[3];
+	}
 };
 
 

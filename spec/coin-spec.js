@@ -23,10 +23,9 @@ describe('Coin', function() {
 		it('has a weight', function() {
 			expect(nickel.weight).toEqual(630);
 		});
-	});
-
-	describe('a penny\'s weight', function(){});
-	it('describes a penny\'s weight', function(){
-		expect(penny.weight).toEqual(554);
+	
+		it('a penny weighs 554', function(){
+			expect(penny.weight).toEqual(554);
+		});
 	});
 });

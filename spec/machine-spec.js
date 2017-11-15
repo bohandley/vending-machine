@@ -16,9 +16,9 @@ describe('Machine', function() {
 
 		// Asssign inventory
 		inventory = [];
-		3 * (inventory.push(cola));
-		3 * (inventory.push(chips));
-		3 * (inventory.push(candy));
+		inventory.push(cola);
+		inventory.push(chips);
+		inventory.push(candy);
     
 		// Define coin objects
 		nickel  = new Coin({name: 'nickel'});
@@ -46,7 +46,7 @@ describe('Machine', function() {
 	});
 
 	describe('insertedCoins', function(){
-		it('has an empty insertedCoins when no coins are inserted', function(){
+		it('has an empty insertedCoins collection when no coins are inserted', function(){
 			expect(machine.insertedCoins).toEqual([]);
 		});
 	});
@@ -63,7 +63,7 @@ describe('Machine', function() {
 		});
 	});
 
-	describe('it accepts nickels, dimes and quarters', function(){
+	describe('accepts coins', function(){
 		it('accepts dimes and places them in the insertedCoins', function(){
 			machine.insertCoins(dime);
 			expect(machine.insertedCoins).toEqual([dime]);
@@ -78,8 +78,7 @@ describe('Machine', function() {
 			machine.insertCoins(quarter);
 			expect(machine.insertedCoins).toEqual([quarter]);
 		});
-	});
-	describe('it rejects pennies', function(){
+	
 		it('does not accept pennies into the insertedCoins', function(){
 			machine.insertCoins(penny);
 			expect(machine.insertedCoins).toEqual([]);
@@ -91,7 +90,7 @@ describe('Machine', function() {
 		});
 	});
 
-	describe('identifies how much money has been inserted', function(){
+	describe('current amount of coins inserted', function(){
 		it('identifies a quarter is worth 25 cents', function(){
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
@@ -156,7 +155,7 @@ describe('Machine', function() {
 		});
 	});
 
-	describe('it makes change when a product is selected that costs less than the value inserted', function(){
+	describe('makes change', function(){
 		it('returns a nickel when the currentAmount is +0.05', function(){
 			insertQuarters();
 			machine.insertCoins(nickel);
@@ -249,8 +248,8 @@ describe('Machine', function() {
 
 	});
 
-	describe('it returns all inserted coins when the coin return button is pressed', function(){
-		it('returns all the inserted coinscoins', function(){
+	describe('returns coins', function(){
+		it('returns all the inserted coins into coinReturn collection when you press the coin return', function(){
 			machine.insertCoins(quarter);
 			var coins = machine.insertedCoins;
 			machine.pressCoinReturn();
@@ -258,4 +257,29 @@ describe('Machine', function() {
 		});
 	});
 
+	describe('sold out', function(){
+		it('displays SOLD OUT if the product is not stcked in the inventory', function(){
+			machine.inventory = [];
+			insertQuarters();
+			machine.selectProduct(cola);
+			expect(machine.display).toEqual('SOLD OUT');
+		});
+
+		it('allows you to purchase another product if your first choice is sold out', function(){
+			machine.inventory = [candy];	
+			console.log(machine.inventory);
+			insertQuarters();
+			machine.selectProduct(cola);
+			machine.selectProduct(candy);
+			expect(machine.productReturn).toEqual([candy]);
+		});
+
+		it('returns your change if your product is sold out and you press the coin return', function(){
+			machine.inventory = [];
+			insertQuarters();
+			machine.selectProduct(cola);
+			machine.pressCoinReturn();
+			expect(machine.coinReturn).toEqual([quarter, quarter, quarter, quarter]);
+		});
+	});
 });

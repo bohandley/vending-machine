@@ -1,4 +1,3 @@
-
 var Machine = function(args) {
 	this.totalCoins = args.totalCoins || [];
 	this.insertedCoins = [];
@@ -39,8 +38,8 @@ Machine.prototype.insertCoins = function(coin) {
 };
 
 // Add value to each coin in a coin collection when loaded into the machine
-Machine.prototype.loadCoins = function(args) {
-	this.totalCoins = args.map(function(coin){
+Machine.prototype.loadCoins = function(coins) {
+	this.totalCoins = coins.map(function(coin){
 		coin.value = weights[coin.weight];
 		coin.value.toFixed(2);
 		return coin;
@@ -100,11 +99,15 @@ Machine.prototype.sumInsertedCoins = function() {
 		x.value = weights[x.weight];
 		return weights[x.weight];
 	});
-	var sum = total.reduce(function(a,b) {
-		return a + b;
-	});
-	sum = sum.toFixed(2);
-	this.currentAmount = sum;
+	if ( total.length != 0 ) {
+		var sum = total.reduce(function(a,b) {
+			return a + b;
+		});
+		sum = sum.toFixed(2);
+		this.currentAmount = sum;
+	} else {
+		this.currentAmount = 0.00.toFixed(2);
+	}
 };
 
 // When a product is purchased that costs less than the amount inserted the machine makes change
@@ -150,13 +153,17 @@ Machine.prototype.takeCoins = function(){
 };
 
 Machine.prototype.sumTotalCoins = function() {
-	var valueAmount = this.totalCoins.map(function(element){
-		return element.value;
-	});
-	var total = valueAmount.reduce(function(a,b){
-		return a + b;
-	},0);
-	return total;
+	if ( this.totalCoins.length != 0 ) {
+		var valueAmount = this.totalCoins.map(function(element){
+			return element.value;
+		});
+		var total = valueAmount.reduce(function(a,b){
+			return a + b;
+		},0);
+		return total;
+	} else {
+		[];
+	}
 };
 
 Machine.prototype.initialDisplay = function() {

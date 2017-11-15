@@ -105,7 +105,6 @@ describe('Machine', function() {
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
 			var amount = machine.currentAmount;
-			console.log(amount);
 			expect(amount).toBeCloseTo(0.25);
 		});
 
@@ -120,7 +119,6 @@ describe('Machine', function() {
 		it('displays the inserted amount', function(){
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
-			console.log(machine.currentAmount);
 			expect(machine.currentAmount).toBeCloseTo(0.25);
 		});
 	});
@@ -277,7 +275,6 @@ describe('Machine', function() {
 
 		it('allows you to purchase another product if your first choice is sold out', function(){
 			machine.inventory = [candy];	
-			console.log(machine.inventory);
 			insertQuarters();
 			machine.selectProduct(cola);
 			machine.selectProduct(candy);
@@ -295,37 +292,37 @@ describe('Machine', function() {
 
 	describe('sum totalCoins', function(){
 		it('sums the coins in the totalCoins collection', function(){
-			expect(machine.sumTotalCoins()).toEqual(1.20)
+			expect(machine.sumTotalCoins()).toEqual(1.20);
 		});
 	});
 
 	describe('exact change', function(){
 		it('displays EXACT CHANGE if there is less than 1.00 in coins in the totalCoins collection', function(){
-			machineWithoutMoney = new Machine({inventory: inventory})
-			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE')
+			machineWithoutMoney = new Machine({inventory: inventory});
+			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE');
 		});
 
 		it('displays EXACT CHANGE if there is less than 1.00 in coins in the totalCoins collection after loading coins', function(){
-			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney = new Machine({inventory: inventory});
 			machineWithoutMoney.loadCoins([quarter]);
-			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE')
+			expect(machineWithoutMoney.display).toEqual('EXACT CHANGE');
 		});
 
 		it('displays INSERT COIN if there is more than 1.00 in coins in the totalCoins collection after loading coins', function(){
-			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney = new Machine({inventory: inventory});
 			machineWithoutMoney.loadCoins(coins);
-			expect(machineWithoutMoney.display).toEqual('INSERT COIN')
+			expect(machineWithoutMoney.display).toEqual('INSERT COIN');
 		});
 
 		it('displays INSERT COIN if no money was loaded, but a product was purchased resulting in totalCoins value > 1.00', function(){
-			machineWithoutMoney = new Machine({inventory: inventory})
+			machineWithoutMoney = new Machine({inventory: inventory});
 			machineWithoutMoney.insertCoins(quarter);
 			machineWithoutMoney.insertCoins(quarter);
 			machineWithoutMoney.insertCoins(quarter);
 			machineWithoutMoney.insertCoins(quarter);
 			machineWithoutMoney.selectProduct(cola);
 			machineWithoutMoney.removeProduct();
-			expect(machineWithoutMoney.display).toEqual('INSERT COIN')
+			expect(machineWithoutMoney.display).toEqual('INSERT COIN');
 		});
 	});
 });

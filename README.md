@@ -42,16 +42,16 @@ For further exploration of the vending-machine's capabilities, explore the admin
 
   Machine accept valid coins
 * nickels
-    * dimes
-    * quarters
+* dimes
+* quarters
   Machine reject invalid coins
-    * returns pennies
+* returns pennies
   Coins have attributes
-    * known
-      ** size
-      ** weight
-    * unknown
-      ** value(assigned by machine which reads the weight of the coin and assigns a value)
+* known
+   * size
+   * weight
+* unknown
+   * value(assigned by machine which reads the weight of the coin and assigns a value)
 
 #### Job 2 - Select a product
   

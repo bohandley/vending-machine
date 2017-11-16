@@ -27,10 +27,10 @@ After cloning the repository, navigate to the directory and type `open index.htm
 Explore the machine. Insert coins, choose products, collect change and more.
 
 For further exploration of the vending-machine's capabilities, explore the administrative functions.
-  -Empty all coins
-  -Restock coins
-  -Empty inventory
-  -Restock inventory
+  Empty all coins
+  Restock coins
+  Empty inventory
+  Restock inventory
 
 ### Notes on development
 

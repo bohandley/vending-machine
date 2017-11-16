@@ -57,34 +57,34 @@ For further exploration of the vending-machine's capabilities, explore the admin
   
   User inserts coins(simulated by pressing buttons)
   User selects a product
-    * Cola - 1.00
-    * Chips - 0.50
-    * Candy - 0.65
+* Cola - 1.00
+* Chips - 0.50
+* Candy - 0.65
   If enough coins have been inserted
-    * Display THANK YOU
-    * Remove product from inventory
-    * Dispense product
+* Display THANK YOU
+* Remove product from inventory
+* Dispense product
   If user inserts less than the cost of the chosen product  
-    * Machine displays 'PRICE: (cost of product)'
+* Machine displays 'PRICE: (cost of product)'
 
 #### Job 3 - Make Change
 
   If user inserts more money than the cost of the product
-    * deposit proper amount of coins in coin collection
-    * return change
+* deposit proper amount of coins in coin collection
+* return change
 
 #### Job 4 - Return coins
 
   If button to return coins is pressed
-    * currentAmount is set to zero
+* currentAmount is set to zero
 
 #### Job 5 - Sold out
 
   if inventory item is sold out
-    * Display SOLD OUT
+* Display SOLD OUT
 
 #### Job 6 - Exact change only
 
   if there is less than $1 in change in the machine
-    * Display EXACT CHANGE
+* Display EXACT CHANGE
   

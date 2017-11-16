@@ -1,8 +1,16 @@
 $(document).ready(function(){
+	 
 	var cola  = new Product({name: 'Cola', price: 1.00});
 	var chips = new Product({name: 'Chips', price: 0.50});
 	var candy = new Product({name: 'Candy', price: 0.65});
-	var inventory = [cola, chips, candy]; 
+	var inventory = [
+		cola,
+		cola, 
+		chips,
+		chips, 
+		candy,
+		candy
+	];
 	
 	var nickel  = new Coin({name: 'nickel'});
 	var dime    = new Coin({name: 'dime'});
@@ -49,7 +57,7 @@ $(document).ready(function(){
 	emptyAllCoins(vendingMachine, coins, display);
 	restockCoins(vendingMachine, coinsForLoading, display);
 	removeAllProducts(vendingMachine, productReturn);
-	restockProducts(vendingMachine, inventory, display);
+	restockProducts(vendingMachine, display);
 });
 
 function removeAllProducts(vendingMachine, productReturn){
@@ -62,12 +70,24 @@ function removeAllProducts(vendingMachine, productReturn){
 	});
 }
 
-function restockProducts(vendingMachine, inventory, display){
+function restockProducts(vendingMachine, display){
 	var restockInventory = document.getElementById('restock-inventory');
+	var cola  = new Product({name: 'Cola', price: 1.00});
+	var chips = new Product({name: 'Chips', price: 0.50});
+	var candy = new Product({name: 'Candy', price: 0.65});
+	var products = [
+		cola,
+		cola, 
+		chips,
+		chips, 
+		candy,
+		candy
+	];
 	restockInventory.addEventListener('click', function(){
-		inventory.map(function(element){
-			return vendingMachine.inventory.push(element);
+		products.forEach(function(element){
+			 vendingMachine.inventory.push(element);	
 		});
+		console.log(vendingMachine.inventory)
 		display.textContent = vendingMachine.initialDisplay(); 
 	});
 }
@@ -90,17 +110,15 @@ function emptyAllCoins(vendingMachine, coins, display){
 		vendingMachine.totalCoins = new Array;
 		vendingMachine.display = vendingMachine.initialDisplay();
 		display.textContent = vendingMachine.display;
-
 	}); 
-
 }
+
 function chooseCola(vendingMachine, currentAmount, productReturn, coins, cola){
 	var colaButton = document.getElementById('cola');
 	colaButton.addEventListener('click', function(){
 		vendingMachine.selectProduct(cola);
 		display.textContent = vendingMachine.display;
 		currentAmount.textContent = vendingMachine.currentAmount;
-		// productReturn.textContent += vendingMachine.productReturn[0].name;
 		productReturn.textContent = vendingMachine.productReturn.map(function(element){
 			return element.name;
 		});

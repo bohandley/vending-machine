@@ -65,7 +65,7 @@ Machine.prototype.selectProduct = function(product) {
 			this.display = displays[2];
 			// Identify which product to remove from inventory
 			var index = this.inventory.findIndex(function(element){
-				return element.name === product.name;
+				return element.name == product.name;
 			});
 			// Remove the product from the inventory
 			var selectedProduct = this.inventory.splice(index, 1);

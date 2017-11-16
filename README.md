@@ -26,19 +26,19 @@ After cloning the repository, navigate to the directory and type `open index.htm
 
 Explore the machine. Insert coins, choose products, collect change and more.
 
-For further exploration of the vending-machine's capabilities, explore the administrative functions.
-  Empty all coins
-  Restock coins
-  Empty inventory
-  Restock inventory
+For further exploration of the vending-machine's capabilities, explore the administrative functions: 
+  empty all coins
+  restock coins
+  empty inventory
+  restock inventory
 
 ### Notes on development
 
-Job 0 - Test Driven Development
+#### Job 0 - Test Driven Development
 
   Set up Jasmine for machine.js, coin.js, product.js
 
-Job 1 - Accept coins
+#### Job 1 - Accept coins
 
   Machine accept valid coins
     nickels
@@ -53,7 +53,7 @@ Job 1 - Accept coins
     unknown
       value(assigned by machine which reads the weight of the coin and assigns a value)
 
-Job 2 - Select a product
+#### Job 2 - Select a product
   
   User inserts coins(simulated by pressing buttons)
   User selects a product
@@ -67,23 +67,23 @@ Job 2 - Select a product
   If user inserts less than the cost of the chosen product  
     Machine displays 'PRICE: (cost of product)'
 
-Job 3 - Make Change
+#### Job 3 - Make Change
 
   If user inserts more money than the cost of the product
     deposit proper amount of coins in coin collection
     return change
 
-Job 4 - Return coins
+#### Job 4 - Return coins
 
   If button to return coins is pressed
     currentAmount is set to zero
 
-Job 5 - Sold out
+#### Job 5 - Sold out
 
   if inventory item is sold out
     Display SOLD OUT
 
-Job 6 - Exact change only
+#### Job 6 - Exact change only
 
   if there is less than $1 in change in the machine
     Display EXACT CHANGE

@@ -46,6 +46,7 @@ For further exploration of the vending-machine's capabilities, explore the admin
 * quarters
   Machine reject invalid coins
 * returns pennies
+  
   Coins have attributes
 * known
    * size

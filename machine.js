@@ -106,10 +106,10 @@ Machine.prototype.getProductFromInventory = function(product){
 		return element.name == product.name;
 	});
 	switch( index ) {
-		case -1 :
-			return false;
-		default :		
-			return this.inventory.splice(index, 1)[0];
+	case -1 :
+		return false;
+	default :		
+		return this.inventory.splice(index, 1)[0];
 	}
 };
 
@@ -120,7 +120,7 @@ Machine.prototype.sumInsertedCoins = function() {
 		x.value = weights[x.weight];
 		return x.value;
 	}).reduce(function(a,b) {
-			return a + b;
+		return a + b;
 	},0);
 };
 
@@ -136,7 +136,7 @@ Machine.prototype.makeChangeAlgorithm = function(valueReturned){
 	var machine = this;
 	monies.map(function(coin){
 		var times =  valueReturned / coin;
-		times = Math.floor(times)
+		times = Math.floor(times);
 		var i=0;
 		for (i; i < times; i++) {
 			var index = this.totalCoins.findIndex(function(element){
@@ -146,7 +146,7 @@ Machine.prototype.makeChangeAlgorithm = function(valueReturned){
 		}
 		valueReturned = valueReturned - (times * coin);
 	},machine);
-}
+};
 
 // When a customer changes their mind before choosing a product, they can have their money returned
 Machine.prototype.pressCoinReturn = function() {
@@ -170,11 +170,11 @@ Machine.prototype.takeCoins = function(){
 
 // Sum the total amount of coins inside the machine 
 Machine.prototype.sumTotalCoins = function() {
-		return this.totalCoins.map(function(element){
-			return element.value;
-		}).reduce(function(a,b){
-			return a + b;
-		},0);
+	return this.totalCoins.map(function(element){
+		return element.value;
+	}).reduce(function(a,b){
+		return a + b;
+	},0);
 };
 
 // Set the initial display of the machine to INSERT COIN or EXACT CHANGE

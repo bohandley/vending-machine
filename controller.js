@@ -94,11 +94,17 @@ function chooseProduct(button, product){
 		vendingMachine.selectProduct(product);
 		setDisplayText();
 		setCurrentAmountText();
+		moveProductToProductReturn();
+		returnCoins();
+	});
+}
+
+function moveProductToProductReturn(){
+	if ( vendingMachine.productReturn != 0 ){
 		productReturn.textContent = vendingMachine.productReturn.map(function(element){
 			return element.name;
 		});
-		returnCoins();
-	});
+	}
 }
 
 function insertCoin(coinButton, coin){

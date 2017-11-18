@@ -1,5 +1,7 @@
 # vending-machine
-Design a vending machine in JavaScript
+This project's goal is to design a vending machine using only JavaScript.
+The vending machine is deployed to heroku [here](https://vending-machine-bjo.herokuapp.com/index.html)
+Try it out!
 
 To access the vending machine, clone the repository.
 

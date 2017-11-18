@@ -47,7 +47,7 @@ For further exploration of the vending-machine's capabilities, explore the admin
   Machine reject invalid coins
 * returns pennies
   
-  Coins have attributes
+Coins have attributes
 * known
    * size
    * weight

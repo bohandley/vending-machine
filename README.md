@@ -40,7 +40,7 @@ For further exploration of the vending-machine's capabilities, explore the admin
 
 #### Job 1 - Accept coins
 
-  Machine accept valid coins
+Machine accepts valid coins
 * nickels
 * dimes
 * quarters

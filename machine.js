@@ -49,58 +49,65 @@ Machine.prototype.loadCoins = function(coins) {
 
 Machine.prototype.setDisplay = function(){
 	this.display = this.initialDisplay();
-}
+};
 
 Machine.prototype.selectProduct = function(product) { 
 	// Add values to the coins and sum them when a product is selected
 	this.sumInsertedCoins();
 	// Check if enough money has been inserted
-	if (this.currentAmount >= product.price) {
-		// if user inserts enough money
-		var found = false;
-		// Check if the product is in stock
-		for(var i = 0; i < this.inventory.length; i++) {
-			if ( this.inventory[i].name === product.name ) {
-				found = true;   
-			}
-		}
-		if ( found === false) {
-			// If product is not in stock, set the display to SOLD OUT
-			return this.display = displays[4];
-		} else {
-			// If the product is in stock and enough money is inserted, display THANK YOU
-			this.display = displays[2];
-			// Identify which product to remove from inventory
-			var index = this.inventory.findIndex(function(element){
-				return element.name == product.name;
-			});
-			// Remove the product from the inventory
-			var selectedProduct = this.inventory.splice(index, 1);
-			
-			// Drop the product into the product return 
-			this.productReturn.push(selectedProduct[0]);
+	var enoughMoney = this.checkMoneyInserted(product);
+	var chosenProduct = this.getProductFromInventory(product);
 	
-			// Add the coins to the totalCoins collection
-			this.totalCoins = this.totalCoins.concat(this.insertedCoins);
-			
-			// Empty the inserted coin holder
-			this.insertedCoins = [];
-			
-			// Return change if too much has been inserted
-			this.makeChange(product);
-	
-			// Reset the currentAmount display to 0.00
-			this.currentAmount = 0.00.toFixed(2);
-		}
+	if ( enoughMoney && chosenProduct){
+		this.addInsertedCoinsToTotalCoins();
+		this.makeChange(product);
+		this.setDisplayToThankYou();
+		this.returnProduct(chosenProduct);		
+		this.resetCurrentAmountDisplay();
+	} else if ( enoughMoney && chosenProduct === undefined)	{
+		this.setDisplayToSoldOut();
 	} else {
-		// If not enough money is inderted, display PRICE: (cost of product)
-		this.display = displays[1] + product.price.toFixed(2);
-		// Sum inserted coins and display them in the coin display
+		this.displayProductPrice(product);
 		this.sumInsertedCoins();
-	} 
+	}
 };
 
-// This function is executed when a product is selected
+Machine.prototype.returnProduct = function(chosenProduct){
+	this.productReturn.push(chosenProduct);
+};
+
+Machine.prototype.setDisplayToThankYou = function(){
+	this.display = displays[2];
+};
+
+Machine.prototype.setDisplayToSoldOut = function(){
+	this.display = displays[4];
+};
+
+Machine.prototype.displayProductPrice = function(product){
+	this.display = displays[1] + product.price.toFixed(2);
+};
+
+Machine.prototype.resetCurrentAmountDisplay = function(){
+	this.currentAmount = 0.00.toFixed(2);
+};
+
+Machine.prototype.addInsertedCoinsToTotalCoins = function(){
+	this.totalCoins = this.totalCoins.concat(this.insertedCoins);
+	this.insertedCoins = [];
+};
+
+Machine.prototype.checkMoneyInserted = function(product){
+	return this.currentAmount >= product.price;
+};
+
+Machine.prototype.getProductFromInventory = function(product){
+	return this.inventory.find(function(el){
+		return el.name === product.name;
+	});
+};
+
+// Sum inserted coins, set value attribute of each coin, set currentAmount display
 Machine.prototype.sumInsertedCoins = function() {
 	// Create an array of inserted coins
 	var total = this.insertedCoins.map(function(x){

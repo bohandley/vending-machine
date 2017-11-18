@@ -10,9 +10,9 @@ describe('Machine', function() {
 
 	beforeEach(function(){
 		// Define product objects
-		cola  = new Product({name: 'Cola', price: 1.00});
-		chips = new Product({name: 'Chips', price: 0.50});
-		candy = new Product({name: 'Candy', price: 0.65});
+		cola  = new Product({name: 'Cola', price: 100});
+		chips = new Product({name: 'Chips', price: 50});
+		candy = new Product({name: 'Candy', price: 65});
 
 		// Asssign inventory
 		inventory = [];
@@ -105,7 +105,7 @@ describe('Machine', function() {
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
 			var amount = machine.currentAmount;
-			expect(amount).toBeCloseTo(0.25);
+			expect(amount).toEqual(25);
 		});
 
 		it('sums the values of a nickel, dime and quarter', function(){
@@ -113,13 +113,13 @@ describe('Machine', function() {
 			machine.insertCoins(dime);
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
-			expect(machine.currentAmount).toBeCloseTo(0.40);
+			expect(machine.currentAmount).toEqual(40);
 		});
 
 		it('displays the inserted amount', function(){
 			machine.insertCoins(quarter);
 			machine.sumInsertedCoins();
-			expect(machine.currentAmount).toBeCloseTo(0.25);
+			expect(machine.currentAmount).toEqual(25);
 		});
 	});
 
@@ -127,7 +127,7 @@ describe('Machine', function() {
 		it('displays the cost of the product if not enough money has been inserted', function(){
 			machine.insertCoins(quarter);
 			machine.selectProduct(cola);
-			expect(machine.display).toEqual('PRICE: 1.00');
+			expect(machine.display).toEqual('PRICE: 100');
 		});
 
 		it('displays \'THANK YOU\' if enough money has been inserted', function(){
@@ -145,7 +145,7 @@ describe('Machine', function() {
 		it('resets the currentAmount to 0.00 when enough money is inserted and a product is selected', function(){
 			insertQuarters();
 			machine.selectProduct(cola);
-			expect(machine.currentAmount).toEqual('0.00');
+			expect(machine.currentAmount).toEqual(0);
 		});
 
 		it('resets the display to \'INSERT COIN\' when the product is removed', function(){
@@ -251,7 +251,7 @@ describe('Machine', function() {
 			machine.insertCoins(dime);
 			machine.insertCoins(dime);
 			machine.selectProduct(cola);
-			expect(machine.coinReturn).toEqual([quarter, quarter, dime, nickel]);
+			expect(machine.coinReturn).toEqual([quarter, quarter, dime, dime]);
 		});
 
 	});
@@ -292,7 +292,7 @@ describe('Machine', function() {
 
 	describe('sum totalCoins', function(){
 		it('sums the coins in the totalCoins collection', function(){
-			expect(machine.sumTotalCoins()).toEqual(1.20);
+			expect(machine.sumTotalCoins()).toEqual(120);
 		});
 	});
 

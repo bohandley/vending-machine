@@ -1,9 +1,49 @@
-$(document).ready(function(){
-	 
-	var cola  = new Product({name: 'Cola', price: 1.00});
-	var chips = new Product({name: 'Chips', price: 0.50});
-	var candy = new Product({name: 'Candy', price: 0.65});
-	var inventory = [
+var cola  = new Product({name: 'Cola', price: 100});
+var chips = new Product({name: 'Chips', price: 50});
+var candy = new Product({name: 'Candy', price: 65});
+
+var nickel  = new Coin({name: 'nickel'});
+var dime    = new Coin({name: 'dime'});
+var quarter = new Coin({name: 'quarter'});
+var penny   = new Coin({name: 'penny'});
+
+var coinsForLoading = createCoins();
+var inventory = createProducts();
+
+var vendingMachine = new Machine({inventory: inventory});
+vendingMachine.loadCoins(coinsForLoading);
+console.log(vendingMachine.inventory)
+
+var display = document.getElementById('display');
+var currentAmount = document.getElementById('current-amount');
+var productReturn = document.getElementById('product-return');
+var coins = document.getElementById('coins');
+
+display.textContent = vendingMachine.display;
+currentAmount.textContent = vendingMachine.currentAmount;
+
+chooseChips(vendingMachine, currentAmount, productReturn, coins, chips);
+chooseCola(vendingMachine, currentAmount, productReturn, coins, cola);
+chooseCandy(vendingMachine, currentAmount, productReturn, coins, candy);
+ 
+insertQuarter(vendingMachine, currentAmount, quarter);
+insertDime(vendingMachine, currentAmount, dime);
+insertNickel(vendingMachine, currentAmount, nickel);
+insertPenny(vendingMachine, currentAmount, coins, penny);
+pressCoinReturnButton(vendingMachine, currentAmount, coins, display);
+
+takeCoins(vendingMachine, currentAmount, coins);
+takeProduct(vendingMachine, currentAmount, display, productReturn);
+emptyAllCoins(vendingMachine, coins, display);
+restockCoins(vendingMachine, coinsForLoading, display);
+removeAllProducts(vendingMachine, productReturn);
+restockProducts(vendingMachine, display);
+
+function createProducts(){
+	var cola  = new Product({name: 'Cola', price: 100});
+	var chips = new Product({name: 'Chips', price: 50});
+	var candy = new Product({name: 'Candy', price: 65});
+	var products = [
 		cola,
 		cola, 
 		chips,
@@ -11,13 +51,15 @@ $(document).ready(function(){
 		candy,
 		candy
 	];
-	
+	return products
+}
+
+function createCoins(){
 	var nickel  = new Coin({name: 'nickel'});
 	var dime    = new Coin({name: 'dime'});
 	var quarter = new Coin({name: 'quarter'});
 	var penny   = new Coin({name: 'penny'});
-  
-	var coinsForLoading = [
+	var coins = [
 		nickel,   
 		nickel, 
 		nickel, 
@@ -28,37 +70,8 @@ $(document).ready(function(){
 		quarter, 
 		quarter
 	];
-
-	var vendingMachine = new Machine({inventory: inventory});
-	vendingMachine.loadCoins(coinsForLoading);
-	
-	var display = document.getElementById('display');
-	var currentAmount = document.getElementById('current-amount');
-	var productReturn = document.getElementById('product-return');
-	var coins = document.getElementById('coins');
-	
-	display.textContent = vendingMachine.display;
-	currentAmount.textContent = vendingMachine.currentAmount;
-	
-	chooseChips(vendingMachine, currentAmount, productReturn, coins, chips);
-	chooseCola(vendingMachine, currentAmount, productReturn, coins, cola);
-	chooseCandy(vendingMachine, currentAmount, productReturn, coins, candy);
-  
-	insertQuarter(vendingMachine, currentAmount, quarter);
-	insertDime(vendingMachine, currentAmount, dime);
-	insertNickel(vendingMachine, currentAmount, nickel);
-	insertPenny(vendingMachine, currentAmount, coins, penny);
-
-	pressCoinReturnButton(vendingMachine, currentAmount, coins, display);
-	
-	takeCoins(vendingMachine, currentAmount, coins);
-	takeProduct(vendingMachine, currentAmount, display, productReturn);
-
-	emptyAllCoins(vendingMachine, coins, display);
-	restockCoins(vendingMachine, coinsForLoading, display);
-	removeAllProducts(vendingMachine, productReturn);
-	restockProducts(vendingMachine, display);
-});
+	return coins;
+}
 
 function removeAllProducts(vendingMachine, productReturn){
 	var removeProducts = document.getElementById('remove-all-products-from-inventory');
@@ -72,22 +85,11 @@ function removeAllProducts(vendingMachine, productReturn){
 
 function restockProducts(vendingMachine, display){
 	var restockInventory = document.getElementById('restock-inventory');
-	var cola  = new Product({name: 'Cola', price: 1.00});
-	var chips = new Product({name: 'Chips', price: 0.50});
-	var candy = new Product({name: 'Candy', price: 0.65});
-	var products = [
-		cola,
-		cola, 
-		chips,
-		chips, 
-		candy,
-		candy
-	];
+	var products = createProducts();
 	restockInventory.addEventListener('click', function(){
 		products.forEach(function(element){
 			 vendingMachine.inventory.push(element);	
 		});
-		console.log(vendingMachine.inventory)
 		display.textContent = vendingMachine.initialDisplay(); 
 	});
 }
@@ -96,7 +98,7 @@ function restockCoins(vendingMachine, coinsForLoading, display) {
 	var restock = document.getElementById('restock-coins');
 	restock.addEventListener('click', function() {
 		vendingMachine.loadCoins(coinsForLoading);
-		vendingMachine.display = vendingMachine.initialDisplay();
+		vendingMachine.setInitialDisplay();
 		display.textContent = vendingMachine.display;
 	});
 }
@@ -108,7 +110,7 @@ function emptyAllCoins(vendingMachine, coins, display){
 			return element.name;
 		});
 		vendingMachine.totalCoins = new Array;
-		vendingMachine.display = vendingMachine.initialDisplay();
+		vendingMachine.setInitialDisplay();
 		display.textContent = vendingMachine.display;
 	}); 
 }

@@ -58,13 +58,13 @@ Machine.prototype.selectProduct = function(product) {
 	var enoughMoney = this.checkMoneyInserted(product);
 	var chosenProduct = this.getProductFromInventory(product);
 	
-	if ( enoughMoney && chosenProduct){
+	if ( enoughMoney && chosenProduct ){
 		this.addInsertedCoinsToTotalCoins();
 		this.makeChange(product);
 		this.setDisplayToThankYou();
 		this.returnProduct(chosenProduct);		
 		this.resetCurrentAmountDisplay();
-	} else if ( enoughMoney && chosenProduct === undefined)	{
+	} else if ( enoughMoney && !chosenProduct )	{
 		this.setDisplayToSoldOut();
 	} else {
 		this.displayProductPrice(product);
@@ -102,9 +102,15 @@ Machine.prototype.checkMoneyInserted = function(product){
 };
 
 Machine.prototype.getProductFromInventory = function(product){
-	return this.inventory.find(function(el){
-		return el.name === product.name;
+	var index = this.inventory.findIndex(function(element){
+		return element.name == product.name;
 	});
+	switch(index) {
+		case -1 :
+			return false;
+		default :		
+			return this.inventory.splice(index, 1)[0];
+	}
 };
 
 // Sum inserted coins, set value attribute of each coin, set currentAmount display

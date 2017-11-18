@@ -44,24 +44,31 @@ Machine.prototype.loadCoins = function(coins) {
 		coin.value.toFixed(2);
 		return coin;
 	});
-	this.display = this.initialDisplay();
+	this.setDisplay();
 };
 
+Machine.prototype.setDisplay = function(){
+	this.display = this.initialDisplay();
+}
+
 Machine.prototype.selectProduct = function(product) { 
+	// Add values to the coins and sum them when a product is selected
 	this.sumInsertedCoins();
+	// Check if enough money has been inserted
 	if (this.currentAmount >= product.price) {
+		// if user inserts enough money
 		var found = false;
-		
+		// Check if the product is in stock
 		for(var i = 0; i < this.inventory.length; i++) {
 			if ( this.inventory[i].name === product.name ) {
 				found = true;   
 			}
 		}
-		
-		if ( found == false) {
+		if ( found === false) {
+			// If product is not in stock, set the display to SOLD OUT
 			return this.display = displays[4];
 		} else {
-			// Display with HTML in future
+			// If the product is in stock and enough money is inserted, display THANK YOU
 			this.display = displays[2];
 			// Identify which product to remove from inventory
 			var index = this.inventory.findIndex(function(element){
@@ -70,10 +77,10 @@ Machine.prototype.selectProduct = function(product) {
 			// Remove the product from the inventory
 			var selectedProduct = this.inventory.splice(index, 1);
 			
-			// Drop the product into the product 
+			// Drop the product into the product return 
 			this.productReturn.push(selectedProduct[0]);
 	
-			// Add the coins to the totalCoins
+			// Add the coins to the totalCoins collection
 			this.totalCoins = this.totalCoins.concat(this.insertedCoins);
 			
 			// Empty the inserted coin holder
@@ -86,36 +93,43 @@ Machine.prototype.selectProduct = function(product) {
 			this.currentAmount = 0.00.toFixed(2);
 		}
 	} else {
-		// Display with HTML in future
+		// If not enough money is inderted, display PRICE: (cost of product)
 		this.display = displays[1] + product.price.toFixed(2);
+		// Sum inserted coins and display them in the coin display
 		this.sumInsertedCoins();
 	} 
 };
 
-// This function is execeted when a product is selected
+// This function is executed when a product is selected
 Machine.prototype.sumInsertedCoins = function() {
+	// Create an array of inserted coins
 	var total = this.insertedCoins.map(function(x){
 		// Assign a value to a coin when it is inserted
 		x.value = weights[x.weight];
-		return weights[x.weight];
+		return x.value;
 	});
+	// If the array is not empty, sum the array
 	if ( total.length != 0 ) {
 		var sum = total.reduce(function(a,b) {
 			return a + b;
 		});
 		sum = sum.toFixed(2);
+		// Set the currentAmount display to the amount of money inserted
 		this.currentAmount = sum;
 	} else {
+		// Display 0.00 if nothing has been inserted
 		this.currentAmount = 0.00.toFixed(2);
 	}
 };
 
-// When a product is purchased that costs less than the amount inserted the machine makes change
+// When a product is purchased that costs less than the amount inserted, the machine makes change
 Machine.prototype.makeChange = function(product) {
+	// Identify how much change needs to be made
 	var valueReturned = this.currentAmount - product.price;
 	valueReturned = valueReturned.toFixed(2);
 	var machine = this;
-	
+	// Make change by looping through the monies array. For each value, 25, 10, and 5,
+	// divide the valueReturned by the value of the coin(element) of the monies array. 
 	monies.forEach(function(coin){
 		var times =  valueReturned / coin;
 		if ( times > 0.99 && times < 1 ) {
@@ -140,18 +154,20 @@ Machine.prototype.pressCoinReturn = function() {
 	this.currentAmount = 0.00.toFixed(2);
 };
 
-// Take a product that has been paid for
+// Take a product that has been paid for from the product return
 Machine.prototype.removeProduct = function() {
 	this.display = this.initialDisplay();
 	this.productReturn = new Array;
 	this.currentAmount = 0.00.toFixed(2);
 };
 
+// Remove the coins from the coin return
 Machine.prototype.takeCoins = function(){
 	this.coinReturn = new Array;
 	this.currentAmount = 0.00.toFixed(2);
 };
 
+// Sum the total amount of coins inside the machine
 Machine.prototype.sumTotalCoins = function() {
 	if ( this.totalCoins.length != 0 ) {
 		var valueAmount = this.totalCoins.map(function(element){
@@ -166,6 +182,7 @@ Machine.prototype.sumTotalCoins = function() {
 	}
 };
 
+// Set the initial display of the machine to INSERT COIN or EXACT CHANGE
 Machine.prototype.initialDisplay = function() {
 	if ( this.sumTotalCoins() >= 1 ) {
 		return displays[0];

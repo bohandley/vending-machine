@@ -34,7 +34,9 @@ Machine.prototype.insertCoins = function(coin) {
 		this.coinReturn.push(coin);
 	} else {
 		this.insertedCoins.push(coin);
+		this.sumInsertedCoins();
 	}
+	
 };
 
 // Add value to each coin in a coin collection when loaded into the machine

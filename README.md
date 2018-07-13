@@ -64,10 +64,10 @@ Coins have attributes
 * Chips - 0.50
 * Candy - 0.65
 * If enough coins have been inserted Display 'THANK YOU'
-* Remove product from inventory
-* Dispense product
+  * Remove product from inventory
+  * Dispense product
 * If user inserts less than the cost of the chosen product  
-** Machine displays 'PRICE: (cost of product)'
+  * Machine displays 'PRICE: (cost of product)'
 
 #### Job 3 - Make Change
 
